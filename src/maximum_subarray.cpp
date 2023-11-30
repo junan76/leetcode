@@ -8,29 +8,23 @@ using namespace std;
  * f(n) = an;              if f(n-1) < 0
  *      = f(n-1) + an;     otherwise
  */
-class Solution
-{
-public:
-    int maxSubArray(vector<int> &nums)
-    {
-        int result = nums[0];
+class Solution {
+ public:
+  int maxSubArray(vector<int>& nums) {
+    int result = nums[0];
 
-        int *table = new int[nums.size()]{0};
-        table[0] = nums[0];
+    int* table = new int[nums.size()]{0};
+    table[0] = nums[0];
 
-        for (int i = 1; i < nums.size(); i++)
-        {
-            if (table[i - 1] >= 0)
-            {
-                table[i] = table[i - 1] + nums[i];
-            }
-            else
-            {
-                table[i] = nums[i];
-            }
-            result = max(result, table[i]);
-        }
-
-        return result;
+    for (int i = 1; i < nums.size(); i++) {
+      if (table[i - 1] >= 0) {
+        table[i] = table[i - 1] + nums[i];
+      } else {
+        table[i] = nums[i];
+      }
+      result = max(result, table[i]);
     }
+
+    return result;
+  }
 };
