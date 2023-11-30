@@ -50,3 +50,45 @@ public:
         return result;
     }
 };
+
+/**
+ * 使用滑动窗口的方式.
+ *
+ * NOTE: [start, end)是无重复子串的范围, 循环之中会计算全部无重复子串的长度, 并保存最长的.
+ */
+class Solution
+{
+public:
+    int lengthOfLongestSubstring(string s)
+    {
+        int result = 0;
+
+        int start = 0;
+        int end = 1;
+        set<char> sub;
+        if (s.length() > 0)
+            sub.insert(s[0]);
+
+        while (start < s.length() && end <= s.length())
+        {
+            result = max(result, end - start);
+            if (sub.count(s[end]) != 0)
+            {
+                sub.erase(s[start]);
+                start++;
+                if (start == end && start < s.length())
+                {
+                    sub.insert(s[start]);
+                    end = start + 1;
+                }
+            }
+            else
+            {
+                sub.insert(s[end]);
+                end++;
+            }
+        }
+
+        return result;
+    }
+};
