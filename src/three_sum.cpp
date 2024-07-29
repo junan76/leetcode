@@ -115,9 +115,49 @@ public:
   }
 };
 
+/**
+ * qwen2优化之后的结果. 原始代码在跳过重复元素部分有错, 需要修改.
+ */
+class Solution_qwen2 {
+public:
+  vector<vector<int>> threeSum(vector<int> &nums) {
+    sort(nums.begin(), nums.end());
+    vector<vector<int>> results;
+
+    for (int i = 0; i < nums.size(); ++i) {
+      if (i > 0 && nums[i] == nums[i - 1])
+        continue;
+
+      int j = i + 1, k = nums.size() - 1;
+
+      while (j < k) {
+        int sum = nums[i] + nums[j] + nums[k];
+        if (sum > 0)
+          --k;
+        else if (sum < 0)
+          ++j;
+        else {
+          /*满足条件的结果, 一次性push_back*/
+          results.push_back({nums[i], nums[j], nums[k]});
+
+          /*跳过重复元素*/
+          do {
+            ++j;
+          } while (j < k && nums[j] == nums[j - 1]);
+          do {
+            --k;
+          } while (k > j && nums[k] == nums[k + 1]);
+        }
+      }
+    }
+
+    return results;
+  }
+};
+
 int main(int argc, char const *argv[]) {
-  vector<int> nums = {-1, 0, 0, 1, 2, -1, -4};
-  Solution s;
+  vector<int> nums = {-3, -2, -2, -1, 4, 5, 5};
+  Solution_qwen2 s;
 
   auto results = s.threeSum(nums);
   std::for_each(results.begin(), results.end(), [](vector<int> answer) {
