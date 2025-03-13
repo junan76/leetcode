@@ -1,25 +1,14 @@
-project := leetcode
+p ?= add_two_numbers
+args =
 
-B ?= build
-$(if "$(B)", $(shell mkdir -p "$(B)"))
+a.out: src/$p.cpp
+	g++ -g src/$p.cpp -o a.out
 
-srcs = $(wildcard src/*.cpp)
-exes = $(srcs:%.cpp=$(B)/%)
+run: a.out
+	./a.out $(args)
 
-.PHONY: all
-all: $(exes)
-	@:
+debug: a.out
+	gdb --args a.out $(args)
 
-$(B)/%: %.cpp
-	mkdir -p $(dir $@)
-	g++ -g $< -o $@
-
-%_debug: $(B)/src/%
-	gdb $<
-
-%_run: $(B)/src/%
-	$<
-
-.PHONY: clean
 clean:
-	rm -rf $(exes)
+	rm -f a.out
